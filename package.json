@@ -1,20 +1,16 @@
-
 {
   "name": "ai-studio-angular-app",
   "version": "0.0.0",
-  "private": true,
-  "engines": {
-    "node": "22.x"
-  },
   "scripts": {
-    "start": "node dist/app/server/server.mjs",
-    "dev": "cross-env ng serve --port=3000 --host=0.0.0.0",
+    "start": "ng serve",
+    "dev": "cross-env ng serve --port=3000 --host=0.0.0.0 --define=\"GEMINI_API_KEY=\\'${GEMINI_API_KEY}\\'\" ${DISABLE_HMR:+--live-reload=false}",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
     "serve:ssr:app": "node dist/app/server/server.mjs"
   },
+  "private": true,
   "dependencies": {
     "@angular/cdk": "^21.0.0",
     "@angular/common": "^21.0.0",
@@ -55,4 +51,3 @@
     "vitest": "^4.0.0"
   }
 }
-
