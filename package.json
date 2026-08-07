@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node dist/app/server/server.mjs",
     "dev": "cross-env ng serve --port=3000 --host=0.0.0.0",
-    "build": "npx ng build",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
