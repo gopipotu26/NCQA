@@ -1,0 +1,175 @@
+@if (auth.isAuthenticated()) {
+<div class="flex h-screen bg-slate-50 font-sans">
+  <!-- Sidebar -->
+  <aside class="bg-white border-r border-slate-100 flex flex-col shadow-sm transition-all duration-300 ease-in-out"
+         [ngClass]="sidebarCollapsed() ? 'w-20' : 'w-64'">
+    <!-- Logo -->
+    <div class="p-4 border-b border-slate-100">
+      <div class="flex items-center gap-3" [ngClass]="sidebarCollapsed() ? 'justify-center' : ''">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25 flex-shrink-0">
+          <mat-icon class="text-white">verified_user</mat-icon>
+        </div>
+        @if (!sidebarCollapsed()) {
+          <div>
+            <h1 class="text-lg font-bold text-slate-900">NCQA Automated</h1>
+            <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider">Credentialing Audit</p>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="flex-1 overflow-y-auto py-4">
+      <div class="px-3 mb-6">
+        @if (!sidebarCollapsed()) {
+          <p class="px-3 mb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Main Menu</p>
+        }
+        <nav class="space-y-1">
+          <a routerLink="/" routerLinkActive="sidebar-link-active" [routerLinkActiveOptions]="{exact: true}"
+             class="sidebar-link" [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'Dashboard' : ''">
+            <mat-icon>dashboard</mat-icon>
+            @if (!sidebarCollapsed()) { <span>Dashboard</span> }
+          </a>
+          <a routerLink="/audits" routerLinkActive="sidebar-link-active"
+             class="sidebar-link" [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'All Audits' : ''">
+            <mat-icon>folder_open</mat-icon>
+            @if (!sidebarCollapsed()) { <span>All Audits</span> }
+          </a>
+          <a routerLink="/upload" routerLinkActive="sidebar-link-active"
+             class="sidebar-link" [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'New Audit' : ''">
+            <mat-icon>add_circle</mat-icon>
+            @if (!sidebarCollapsed()) { <span>New Audit</span> }
+          </a>
+          <a routerLink="/monitoring" routerLinkActive="sidebar-link-active"
+             class="sidebar-link" [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'Monitoring' : ''">
+            <mat-icon>monitoring</mat-icon>
+            @if (!sidebarCollapsed()) { <span>Monitoring</span> }
+          </a>
+        </nav>
+      </div>
+
+      <div class="px-3 mb-6">
+        @if (!sidebarCollapsed()) {
+          <p class="px-3 mb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">System</p>
+        }
+        <nav class="space-y-1">
+          <a routerLink="/standards" routerLinkActive="sidebar-link-active" class="sidebar-link" 
+             [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'NCQA Standards' : ''">
+            <mat-icon>menu_book</mat-icon>
+            @if (!sidebarCollapsed()) { <span>NCQA Standards</span> }
+          </a>
+          @if (auth.isAdmin()) {
+            <a routerLink="/settings" routerLinkActive="sidebar-link-active" class="sidebar-link"
+               [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'Settings' : ''">
+              <mat-icon>settings</mat-icon>
+              @if (!sidebarCollapsed()) { <span>Settings</span> }
+            </a>
+            <a routerLink="/profile" routerLinkActive="sidebar-link-active" class="sidebar-link"
+               [ngClass]="sidebarCollapsed() ? 'justify-center px-0' : ''" [title]="sidebarCollapsed() ? 'Profile' : ''">
+              <mat-icon>person</mat-icon>
+              @if (!sidebarCollapsed()) { <span>Profile</span> }
+            </a>
+          }
+        </nav>
+      </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-100">
+      @if (!sidebarCollapsed()) {
+        <div class="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl p-4 text-white">
+          <div class="flex items-center gap-2 mb-2">
+            <mat-icon class="icon-sm">verified</mat-icon>
+            <span class="text-xs font-semibold">NCQA 2025 Ready</span>
+          </div>
+          <p class="text-[11px] text-blue-100 leading-relaxed">PSV: 120 days • Monitoring: Monthly</p>
+        </div>
+      } @else {
+        <div class="flex justify-center">
+          <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white" title="NCQA 2025 Ready">
+            <mat-icon class="icon-sm">verified</mat-icon>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Toggle Button -->
+    <div class="p-3 border-t border-slate-100">
+      <button (click)="toggleSidebar()" 
+              class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors">
+        <mat-icon>{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col overflow-hidden bg-slate-50">
+    <!-- Top Header -->
+    <header class="h-16 px-8 flex items-center justify-between bg-white border-b border-slate-100">
+      <!-- Search -->
+      <div class="flex-1 max-w-xl">
+        <div class="relative">
+          <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 icon-sm">search</mat-icon>
+          <input type="text" placeholder="Search practitioners, NPI, audits..." 
+                 class="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all">
+        </div>
+      </div>
+      
+      <!-- Header Actions -->
+      <div class="flex items-center gap-4 ml-6">
+        <!-- Notifications -->
+        <button class="relative w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-colors">
+          <mat-icon>notifications_none</mat-icon>
+          <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full"></span>
+        </button>
+        
+        <!-- Help -->
+        <button class="w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-700 transition-colors">
+          <mat-icon>help_outline</mat-icon>
+        </button>
+        
+        <!-- Divider -->
+        <div class="w-px h-8 bg-slate-200"></div>
+        
+        <!-- User Profile -->
+        @if (auth.isAdmin()) {
+          <a routerLink="/profile" class="flex items-center gap-3 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer">
+            <div class="text-right">
+              <p class="text-sm font-semibold text-slate-900">Administrator</p>
+              <p class="text-xs text-slate-500">Full access</p>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+              AD
+            </div>
+          </a>
+        } @else {
+          <div class="flex items-center gap-3 px-3 py-1.5 rounded-lg">
+            <div class="text-right">
+              <p class="text-sm font-semibold text-slate-900">Standard User</p>
+              <p class="text-xs text-slate-500">Limited access</p>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+              US
+            </div>
+          </div>
+        }
+
+        <!-- Logout -->
+        <button (click)="auth.logout()" title="Sign out"
+                class="w-10 h-10 rounded-lg bg-slate-50 hover:bg-rose-50 flex items-center justify-center text-slate-500 hover:text-rose-600 transition-colors">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto">
+      <div class="p-8 max-w-7xl mx-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
+</div>
+} @else {
+  <router-outlet></router-outlet>
+}
